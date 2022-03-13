@@ -57,29 +57,19 @@
       doc.setFontType('normal')
       doc.setFontSize(12);
       
-      var words = body.split(' ');
-      var line = '';
-      var y = 35;
-      //every 17 lines we need to add a new page and reset the y position and continue
-      var lines = 0;
-      for(var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + ' ';
-        var metrics = doc.getTextDimensions(testLine);
-        var testWidth = metrics.w;
-        if(testWidth > 384) {
-          doc.text(line, 10, y);
-          line = words[n] + ' ';
-          y += 10;
-          lines++;
-          if(lines == 20) {
-            lines = 0;
-            doc.addPage();
-            y = 35;
-          }
+
+      //every 17 lines, and continue
+      var lines = body.split('\n');
+      var linecount = 0;
+      var lineheight = 10;
+
+      for (var i = 0; i < lines.length; i++) {
+        if (linecount == 17) {
+          doc.addPage();
+          linecount = 0;
         }
-        else {
-          line = testLine;
-        }
+        doc.text(lines[i], 10, linecount * lineheight + 40);
+        linecount++;
       }
       
 
@@ -88,8 +78,6 @@
     })
 
 
-    // select a sentence
-    
     
   </script>
   
