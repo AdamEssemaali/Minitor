@@ -1,0 +1,31 @@
+#titlearea {
+    background-color: rgba(255, 255, 255, 0);
+    border: 0;
+    padding-left: 10px;
+    position: relative;
+    z-index: 1;
+    font-size: 43px;
+    resize: none;
+    width: 100%;
+    height: 67px;
+    border-style: none; 
+    border-color: Transparent; 
+    overflow: auto;          
+    outline: none;
+}
+
+#bodyarea{
+    background-color: rgba(255, 255, 255, 0);
+    border: 0;
+    padding-left: 10px;
+    position: relative;
+    z-index: 1;
+    font-size: 16px;
+    resize: none;
+    height: 100%;
+    width: 100%;
+    border-style: none; 
+    outline: none;
+    overflow: auto;      
+    
+}

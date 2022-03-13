@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minitor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="src/css/main.css">
+</head>
+<body class="bg-black">
+  
+  <div style="opacity: 0; visibility: hidden;" id="popup">
+    <h1 class="text-white">Popup</h1>
+  </div>
+  <div> 
+    <textarea style="opacity: 1; visibility: visible;" class="font-bold text-white" id="titlearea" spellcheck="false" name="TitleArea">Insert Title</textarea>
+  </div>
+  <textarea style="opacity: 1; visibility: visible;" class="font-mono text-white" id="bodyarea" spellcheck="false" name="BodyArea">Insert Text</textarea>
+  
+  
+  <script src="https://craig.global.ssl.fastly.net/js/mousetrap/mousetrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="src/jspdf.min.js"></script>
+  
+  <script>
+    $('#bodyarea').each(function () {
+      this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+    }).on('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    $(document).ready(function() {
+
+        $('#titlearea').keypress(function(event) {
+
+            if (event.keyCode == 13) {
+                event.preventDefault();
+            }
+        });
+    });
+    Mousetrap.bind('ctrl+s', () => {
+      var title = $('#titlearea').val();
+      var body = $('#bodyarea').val();
+      var doc = new jsPDF();
+
+
+
+
+      doc.setFont('helvetica')
+      doc.setFontType('bold')
+      doc.setFontSize(42);
+      doc.text(title, 10, 20);
+      //set font size
+      doc.setFont('courier')
+      doc.setFontType('normal')
+      doc.setFontSize(12);
+      
+      var words = body.split(' ');
+      var line = '';
+      var y = 35;
+      //every 17 lines we need to add a new page and reset the y position and continue
+      var lines = 0;
+      for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = doc.getTextDimensions(testLine);
+        var testWidth = metrics.w;
+        if(testWidth > 384) {
+          doc.text(line, 10, y);
+          line = words[n] + ' ';
+          y += 10;
+          lines++;
+          if(lines == 20) {
+            lines = 0;
+            doc.addPage();
+            y = 35;
+          }
+        }
+        else {
+          line = testLine;
+        }
+      }
+      
+
+
+      doc.save(title+'.pdf');
+    })
+
+
+    // select a sentence
+    
+    
+  </script>
+  
+</body>
+</html>
